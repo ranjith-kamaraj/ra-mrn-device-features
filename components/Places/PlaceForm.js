@@ -21,7 +21,7 @@ function PlaceFrom() {
             <TextInput style={styles.input} onChangeText={onChangeTestHandler} value={enteredValue} />
         </View>
         <ImagePicker />
-        {/* <LocationPicker /> */}
+        <LocationPicker />
         <WeatherDetails/>
     </ScrollView>
 }

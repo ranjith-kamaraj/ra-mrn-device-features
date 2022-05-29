@@ -1,12 +1,15 @@
-import { StyleSheet, View, Alert } from "react-native";
+import { StyleSheet, View, Alert, Text } from "react-native";
 import { getCurrentPositionAsync, useForegroundPermissions, PermissionStatus } from 'expo-location';
 
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../UI/OutlinedButton";
+import { useNavigation } from "@react-navigation/native";
 
 /* Google Map API Key Needed so daisabling for now */
 function LocationPicker() {
     const [locationPermissionInformation, requestPersmission] = useForegroundPermissions();
+
+    const { navigate } = useNavigation();
 
     async function verifyPermissions() {
         if (locationPermissionInformation.status === PermissionStatus.UNDETERMINED) {
@@ -24,7 +27,7 @@ function LocationPicker() {
             return false;
         };
 
-        return true; 
+        return true;
     };
 
     async function getLocationHandler() {
@@ -37,14 +40,18 @@ function LocationPicker() {
         console.log('test' + location);
     };
 
-    async function pickOnMapHandler() { };
+    async function pickOnMapHandler() {
+        navigate("Map");
+    };
 
     return (
         <View>
-            <View style={styles.mapPreview}></View>
+            {/* <View style={styles.mapPreview}></View> */}
+            <Text style={styles.weather}>Weather Details</Text>
             <View style={styles.actions}>
-                <OutlinedButton icon="location" onPress={getLocationHandler}>Locate User</OutlinedButton>
+                {/* <OutlinedButton icon="location" onPress={getLocationHandler}>Locate User</OutlinedButton> */}
                 <OutlinedButton icon="map" onPress={pickOnMapHandler}>Pick On Map</OutlinedButton>
+                <Text style={styles.option}>Or</Text>
             </View>
         </View>
     )
@@ -62,9 +69,27 @@ const styles = StyleSheet.create({
         marginVertical: 8,
         backgroundColor: Colors.primary100
     },
-    actions: {
-        justifyContent: 'space-around',
-        flexDirection: 'row',
-        alignItems: 'center'
+    weather: {
+        margin: 10,
+        fontWeight: 'bold',
+        marginBottom: 4,
+        color: Colors.primary500
+    },
+    label: {
+        fontWeight: 'bold',
+        marginBottom: 4,
+        color: Colors.primary500,
+        marginVertical: 8,
+        paddingHorizontal: 4,
+        paddingVertical: 8,
+        fontSize: 16,
+        borderBottomColor: Colors.primary500,
+        borderBottomWidth: 2,
+        backgroundColor: Colors.primary500
+
+    },
+    option: {
+        color: 'white',
+        marginLeft: 150
     }
 });
