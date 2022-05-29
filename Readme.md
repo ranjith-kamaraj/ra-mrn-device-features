@@ -1,0 +1,1 @@
+Using React Native, MapBox, Weather Stack built the application
