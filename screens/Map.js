@@ -2,6 +2,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions, Alert } from 'react-native';
 import { useCallback, useLayoutEffect, useState } from 'react';
 import { get, isEmpty } from 'lodash';
+
 import IconButton from '../components/UI/IconButton';
 
 
@@ -40,7 +41,7 @@ export default function Map({ navigation }) {
             pickedLatitude: selectedLocation.latitude,
             pickedLongitude: selectedLocation.longitude
         });
-    }, [navigation, selectedLocation]);
+    }, [navigation, selectedLocation, selectedLocation]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -79,5 +80,5 @@ const styles = StyleSheet.create({
     map: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
-    },
+    }
 });

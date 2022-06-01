@@ -3,13 +3,28 @@ import { getCurrentPositionAsync, useForegroundPermissions, PermissionStatus } f
 
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../UI/OutlinedButton";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
+import { useState, useEffect} from "react";
+import Location from "../../screens/utils/Location";
 
 /* Google Map API Key Needed so daisabling for now */
 function LocationPicker() {
     const [locationPermissionInformation, requestPersmission] = useForegroundPermissions();
+    const [mapPickedLocation, setMapPickedLocation] = useState({});
 
     const { navigate } = useNavigation();
+    const route = useRoute();
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        console.log('test' + JSON.stringify(route.params))
+        if (isFocused && route.params) {
+            setMapPickedLocation({
+                latitude : route.params.pickedLatitude,
+                longitude : route.params.pickedLongitude
+            })
+        }
+    }, [route, isFocused])
 
     async function verifyPermissions() {
         if (locationPermissionInformation.status === PermissionStatus.UNDETERMINED) {
@@ -37,7 +52,6 @@ function LocationPicker() {
         // };
 
         const location = await getCurrentPositionAsync();
-        console.log('test' + location);
     };
 
     async function pickOnMapHandler() {
@@ -46,12 +60,16 @@ function LocationPicker() {
 
     return (
         <View>
-            {/* <View style={styles.mapPreview}></View> */}
-            <Text style={styles.weather}>Weather Details</Text>
+            <View style={styles.mapPreview}>
+                <Location
+                  locationDetails={mapPickedLocation}
+                />
+            </View>
+            {/* <Text style={styles.weather}>Weather Details</Text> */}
             <View style={styles.actions}>
                 {/* <OutlinedButton icon="location" onPress={getLocationHandler}>Locate User</OutlinedButton> */}
                 <OutlinedButton icon="map" onPress={pickOnMapHandler}>Pick On Map</OutlinedButton>
-                <Text style={styles.option}>Or</Text>
+                {/* <Text style={styles.option}>Or</Text> */}
             </View>
         </View>
     )

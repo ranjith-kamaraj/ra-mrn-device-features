@@ -27,8 +27,7 @@ function WeatherDetails() {
         if (!isEmpty(mapPickedLocation)) {
             getWeatherDetails(mapPickedLocation.latitude, mapPickedLocation.longitude);
         }
-    }, [mapPickedLocation]);
-
+    }, []);
 
 
     let MAPBOX_ACCESS_KEY = "pk.eyJ1IjoicmFuaml0aDEiLCJhIjoiY2t2eXduN3R5NHYyaDJ1dGsxN2Y0ZG5yZSJ9.hLoZZpIopfzbuUfS_DptuQ";
@@ -100,7 +99,7 @@ function WeatherDetails() {
                 </Pressable>
             </View>
             {!isEmpty(weatherData) && <View style={styles.weatherPreview}>
-                {/* <Text>Place Name: {locationData.placeName}</Text> */}
+                <Text>Place Name: {locationData.placeName}</Text>
                 <Text>Description: {weatherData.description}</Text>
                 <Text>Temperature: {weatherData.temperature}° </Text>
                 <Text>Feels Like: {weatherData.feelsLike}°</Text>

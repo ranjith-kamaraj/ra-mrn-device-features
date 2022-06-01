@@ -22,7 +22,8 @@ function PlaceFrom() {
         </View>
         <ImagePicker />
         <LocationPicker />
-        <WeatherDetails/>
+        {/* Quota Exceeded */}
+        {/* <WeatherDetails/> */}
     </ScrollView>
 }
 
