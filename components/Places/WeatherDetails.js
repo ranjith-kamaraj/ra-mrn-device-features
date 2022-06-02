@@ -39,6 +39,7 @@ function WeatherDetails() {
         setAddress(enteredText);
     };
 
+    //https://docs.mapbox.com/api/search/geocoding/#endpoints needd to check
     const getLocationDetails = async () => {
         /* Get Location Details */
         let mapBoxUrl = `${MAPBOX_BASE_URL}/geocoding/v5/mapbox.places/${address}.json?limit=1&access_token=${MAPBOX_ACCESS_KEY}`;
@@ -67,7 +68,6 @@ function WeatherDetails() {
         let weatherStackUrl = `${WEATHER_STACK_BASE_URL}/current?access_key=${WEATHER_STACK_ACCESS_KEY}&query=${latitude},${longitude}`;
         let weatherResponse = await axios.get(weatherStackUrl);
         weatherResponse = get(weatherResponse, 'data', "");
-        console.log("wat" + JSON.stringify(weatherResponse));
 
         if (weatherResponse.error || (weatherResponse.error && weatherResponse.error.info)) {
             Alert.alert('Fetching Weather', "Unable to find the weather details!");

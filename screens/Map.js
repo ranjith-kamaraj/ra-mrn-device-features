@@ -17,8 +17,6 @@ export default function Map({ navigation }) {
     };
 
     function selectLocationHandler(event) {
-        console.log('Event' + JSON.stringify(event.nativeEvent));
-
         let latitude = get(event, 'nativeEvent.coordinate.latitude', '');
         let longitude = get(event, 'nativeEvent.coordinate.longitude', '');
 

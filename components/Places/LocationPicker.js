@@ -1,14 +1,18 @@
 import { StyleSheet, View, Alert, Text } from "react-native";
 import { getCurrentPositionAsync, useForegroundPermissions, PermissionStatus } from 'expo-location';
+import axios from 'axios';
+import { isEmpty, get } from "lodash";
+
 
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../UI/OutlinedButton";
 import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Location from "../../screens/utils/Location";
 
+
 /* Google Map API Key Needed so daisabling for now */
-function LocationPicker() {
+function LocationPicker(props) {
     const [locationPermissionInformation, requestPersmission] = useForegroundPermissions();
     const [mapPickedLocation, setMapPickedLocation] = useState({});
 
@@ -17,15 +21,36 @@ function LocationPicker() {
     const isFocused = useIsFocused();
 
     useEffect(() => {
-        console.log('test' + JSON.stringify(route.params))
         if (isFocused && route.params) {
             setMapPickedLocation({
-                latitude : route.params.pickedLatitude,
-                longitude : route.params.pickedLongitude
+                latitude: route.params.pickedLatitude,
+                longitude: route.params.pickedLongitude
             })
         }
-    }, [route, isFocused])
+    }, [route, isFocused]);
 
+    const getAddressDetails = async (mapPickedLocation) => {
+        /* Get Location Details */
+        const {latitude, longitude } = mapPickedLocation || {};
+        let mapBoxUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=pk.eyJ1IjoicmFuaml0aDEiLCJhIjoiY2t2eXduN3R5NHYyaDJ1dGsxN2Y0ZG5yZSJ9.hLoZZpIopfzbuUfS_DptuQ`;
+        const response = await axios.get(mapBoxUrl);
+        let placeName = get(response, 'data.features[0].place_name', '');
+        console.log('test' + JSON.stringify(response));
+    
+       return placeName;
+    };
+
+    useEffect(() => {
+        async function handleLocation() {
+            if(!isEmpty(mapPickedLocation)){
+                let address = await getAddressDetails(mapPickedLocation);
+                props.onPickLocation({...mapPickedLocation, address});   
+            }    
+         }
+         handleLocation();
+    }, [mapPickedLocation, props.onPickLocation]);
+
+    
     async function verifyPermissions() {
         if (locationPermissionInformation.status === PermissionStatus.UNDETERMINED) {
             const permissionResponse = await requestPersmission();
@@ -62,7 +87,7 @@ function LocationPicker() {
         <View>
             <View style={styles.mapPreview}>
                 <Location
-                  locationDetails={mapPickedLocation}
+                    locationDetails={mapPickedLocation}
                 />
             </View>
             {/* <Text style={styles.weather}>Weather Details</Text> */}

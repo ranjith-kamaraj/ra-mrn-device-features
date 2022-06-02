@@ -1,17 +1,33 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ScrollView, Text, TextInput, View, StyleSheet } from 'react-native';
 
 import { Colors } from '../../constants/colors';
+import Button from '../UI/Button';
 import ImagePicker from './ImagePicker';
 import LocationPicker from './LocationPicker';
 import WeatherDetails from './WeatherDetails';
 
 function PlaceFrom() {
     const [enteredValue, setEnteredValue] = useState("");
+    const [image, setImage] = useState("");
+    const [pickedLocation, setPickedLocation] = useState("");
 
     function onChangeTestHandler(enteredText) {
         setEnteredValue(enteredText);
-    }
+    };
+
+    function saveImageHandler(imageUri) {
+        setImage(imageUri);
+    };
+
+    const savePickedLocationHandler = useCallback((location) => {
+        setPickedLocation('final' + JSON.stringify(location));
+    }, []);
+
+
+    function saveLocationHandler() {
+        console.log('call' + enteredValue, image, pickedLocation);
+    };
 
     return <ScrollView style={styles.form}>
         <View>
@@ -20,10 +36,11 @@ function PlaceFrom() {
             </Text>
             <TextInput style={styles.input} onChangeText={onChangeTestHandler} value={enteredValue} />
         </View>
-        <ImagePicker />
-        <LocationPicker />
+        <ImagePicker onTakeImage={saveImageHandler} />
+        <LocationPicker onPickLocation={savePickedLocationHandler} />
         {/* Quota Exceeded */}
         {/* <WeatherDetails/> */}
+        <Button onPress={saveLocationHandler}>Add Place</Button>
     </ScrollView>
 }
 

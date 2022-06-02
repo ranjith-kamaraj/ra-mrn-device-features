@@ -6,7 +6,7 @@ import { Colors } from "../../constants/colors";
 import OutlinedButton from "../UI/OutlinedButton";
 
 
-function ImagePicker() {
+function ImagePicker(props) {
     const [imageUrl, setImageUrl] = useState("");
 
     const [cameraPermissionInformation, requestPersmission] = useCameraPermissions();
@@ -44,6 +44,7 @@ function ImagePicker() {
         });
 
         setImageUrl(image.uri);
+        props.onTakeImage(image.uri);
     };
 
     let imagePreview = <Text>No images taken yet.</Text>
