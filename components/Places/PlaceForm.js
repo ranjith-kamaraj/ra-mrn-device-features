@@ -2,12 +2,13 @@ import { useCallback, useState } from 'react';
 import { ScrollView, Text, TextInput, View, StyleSheet } from 'react-native';
 
 import { Colors } from '../../constants/colors';
+import { Place } from '../../models/place';
 import Button from '../UI/Button';
 import ImagePicker from './ImagePicker';
 import LocationPicker from './LocationPicker';
 import WeatherDetails from './WeatherDetails';
 
-function PlaceFrom() {
+function PlaceFrom({onCreatePlace}) {
     const [enteredValue, setEnteredValue] = useState("");
     const [image, setImage] = useState("");
     const [pickedLocation, setPickedLocation] = useState("");
@@ -21,12 +22,17 @@ function PlaceFrom() {
     };
 
     const savePickedLocationHandler = useCallback((location) => {
-        setPickedLocation('final' + JSON.stringify(location));
+        setPickedLocation(location);
     }, []);
 
 
     function saveLocationHandler() {
-        console.log('call' + enteredValue, image, pickedLocation);
+        console.log('tiltl ---' + enteredValue);
+        console.log('image ---' + image);
+        console.log('Location ---' + pickedLocation.latitude);
+        const placeData = new Place(enteredValue, image, pickedLocation);
+        console.log('PLaces Data' + JSON.stringify(placeData))
+        onCreatePlace(placeData);
     };
 
     return <ScrollView style={styles.form}>
