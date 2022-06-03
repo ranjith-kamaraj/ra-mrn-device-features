@@ -1,11 +1,12 @@
 import { View, Text } from 'react-native';
 import PlaceFrom from '../components/Places/PlaceForm';
+import { insertPlace } from './utils/database';
 
 function AddPlace({ navigation }) {
-    function createPlaceHandler(place) {
-        navigation.navigate('AllPlaces', {
-            place: place
-        })
+    async function createPlaceHandler(place) {
+    
+        await insertPlace(place);
+        navigation.navigate('AllPlaces')
     };
 
     return <PlaceFrom onCreatePlace={createPlaceHandler} />

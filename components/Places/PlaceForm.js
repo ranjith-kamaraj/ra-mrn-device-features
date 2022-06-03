@@ -27,11 +27,8 @@ function PlaceFrom({onCreatePlace}) {
 
 
     function saveLocationHandler() {
-        console.log('tiltl ---' + enteredValue);
-        console.log('image ---' + image);
-        console.log('Location ---' + pickedLocation.latitude);
         const placeData = new Place(enteredValue, image, pickedLocation);
-        console.log('PLaces Data' + JSON.stringify(placeData))
+        // console.log('PLaces Data' + JSON.stringify(placeData))
         onCreatePlace(placeData);
     };
 
