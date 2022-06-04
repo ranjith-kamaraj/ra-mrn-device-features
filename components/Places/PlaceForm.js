@@ -28,7 +28,6 @@ function PlaceFrom({onCreatePlace}) {
 
     function saveLocationHandler() {
         const placeData = new Place(enteredValue, image, pickedLocation);
-        // console.log('PLaces Data' + JSON.stringify(placeData))
         onCreatePlace(placeData);
     };
 

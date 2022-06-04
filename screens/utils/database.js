@@ -28,7 +28,7 @@ export function init() {
     return promise;
 };
 
-export function insertPlace(place)  {
+export function insertPlace(place) {
 
     const promise = new Promise((resolve, reject) => {
         database.transaction(tx => {
@@ -41,7 +41,6 @@ export function insertPlace(place)  {
                     place.location.longitude || ""
                 ],
                 (_, result) => {
-                    console.log('res' + JSON.stringify(result));
                     resolve(result);
                 },
                 (_, error) => {
@@ -55,7 +54,7 @@ export function insertPlace(place)  {
     return promise;
 };
 
-export function fetchPlace()  {
+export function fetchPlace() {
     const promise = new Promise((resolve, reject) => {
         database.transaction(tx => {
             tx.executeSql('SELECT * FROM places',
@@ -63,7 +62,7 @@ export function fetchPlace()  {
                 (_, result) => {
                     const places = [];
 
-                    for(const dp of result.rows._array){
+                    for (const dp of result.rows._array) {
                         places.push(
                             new Place(
                                 dp.title,
@@ -77,8 +76,28 @@ export function fetchPlace()  {
                             )
                         )
                     };
-                    
+
                     resolve(places);
+                },
+                (_, error) => {
+                    console.log('err' + error);
+                    reject(error);
+                }
+            )
+        })
+    });
+
+    return promise;
+};
+
+export function fetchPlaceDetails(id) {
+    const promise = new Promise((resolve, reject) => {
+        database.transaction(tx => {
+            tx.executeSql('SELECT * FROM places WHERE id = ?',
+                [id],
+                (_, result) => {
+                    let dp = result.rows._array[0];
+                    resolve(dp);
                 },
                 (_, error) => {
                     console.log('err' + error);

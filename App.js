@@ -6,9 +6,10 @@ import { useEffect, useState } from 'react';
 
 import AllPlaces from "./screens/AllPlaces";
 import AddPlace from "./screens/AddPlace";
+import PlaceDetails from "./screens/PlaceDetails";
 import IconButton from './components/UI/IconButton';
 import Map from './screens/Map';
-import { init } from './screens/utils/database';
+import { init, deleteData } from './screens/utils/database';
 import { Colors } from './constants/colors';
 
 const Stack = createNativeStackNavigator();
@@ -18,7 +19,6 @@ export default function App() {
   const [dbInitialized, setDbInitialized] = useState(false);
   useEffect(() => {
     init().then(() => {
-      console.log('db intial')
       setDbInitialized(true);
     }).catch((error) => {
       console.log(error);
@@ -60,6 +60,9 @@ export default function App() {
             component={AddPlace}
             options={{ title: 'Add a new place' }} />
           <Stack.Screen name="Map" component={Map} />
+          <Stack.Screen name="PlaceDetails" component={PlaceDetails} setOptions={
+           title= "Place Loading..."
+          }/>
         </Stack.Navigator>
       </NavigationContainer>
     </>
